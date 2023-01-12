@@ -1,0 +1,19 @@
+services:
+
+  aws:
+   image: localstack/localstack-pro:latest
+   ports:
+     - "4566:4566"
+     - "8883:8883"
+   environment:
+     EDGE_PORT: 4566
+     LOCALSTACK_API_KEY: 2gB0Q57eWj    
+
+  test:
+    depends_on: 
+      aws:
+        condition: service_healthy
+    build: . 
+    environment:
+     LOCALSTACK_HOST: aws
+     AWS_ENDPOINT: http://aws:4566
